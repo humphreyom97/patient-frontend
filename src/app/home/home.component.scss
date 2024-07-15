@@ -1,0 +1,21 @@
+.example-spacer {
+  flex: 1 1 auto;
+}
+mat-form-field {
+  width: 100%;
+  margin: auto;
+}
+.main-body {
+  max-width: 80%;
+  margin: 0.875rem auto;
+}
+.action-icon:hover {
+  opacity: 0.8;
+  cursor: pointer;
+}
+
+.mdc-button.mat-mdc-button.button-manage {
+  margin: 0.5rem 0;
+  border-radius: 0px;
+  min-width: 10rem;
+}

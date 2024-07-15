@@ -1,0 +1,73 @@
+<!-- Define the template with a template reference variable -->
+<ng-template #formGroupTemplate let-parentForm="parentForm">
+  <div class="form-group">
+    <ng-container *ngFor="let control of getFormGroupControls(parentForm)">
+      <div
+        *ngIf="
+          isFormControl(parentForm.get(control)) &&
+          control !== '_id' &&
+          control !== '__v'
+        "
+      >
+        <mat-label class="block mb-4 text-black font-medium">{{
+          getLabel(control)
+        }}</mat-label>
+        <mat-form-field appearance="outline">
+          <input
+            matInput
+            [formControl]="getFormControl(control, parentForm)"
+            [readonly]="!editMode"
+          />
+          <mat-error
+            *ngIf="parentForm.get(control)?.hasError('required')"
+            class="text-base"
+          >
+            {{ getLabel(control) }} is required
+          </mat-error>
+        </mat-form-field>
+      </div>
+    </ng-container>
+  </div>
+</ng-template>
+
+<!-- If parent form is a form group -->
+<ng-container *ngIf="isFormGroup(parentForm)">
+  <ng-container
+    *ngTemplateOutlet="formGroupTemplate; context: { parentForm: parentForm }"
+  ></ng-container>
+</ng-container>
+
+<!-- If parent form is a form array i.e can add/remove child form groups -->
+<ng-container *ngIf="isFormArray(parentForm)">
+  <div>
+    <div
+      *ngFor="
+        let childFormGroup of getFormArrayControls(parentForm);
+        let i = index
+      "
+      class="form-array-control"
+    >
+      <ng-container *ngIf="isFormGroup(childFormGroup)">
+        <ng-container
+          *ngTemplateOutlet="
+            formGroupTemplate;
+            context: { parentForm: childFormGroup }
+          "
+        ></ng-container>
+      </ng-container>
+
+      <button
+        mat-button
+        class="button-delete mr-4 self-end mb-5"
+        (click)="removeFormGroup(parentForm, i)"
+      >
+        <mat-icon color="warn" class="cursor-pointer icon-white"
+          >close</mat-icon
+        >
+        Delete Entry
+      </button>
+    </div>
+
+    <button (click)="addFormGroup(schemaKey)">Add</button>
+  </div>
+</ng-container>

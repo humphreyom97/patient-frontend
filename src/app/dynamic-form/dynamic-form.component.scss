@@ -1,0 +1,26 @@
+.form-group {
+  display: flex;
+}
+
+.form-array-control .form-group {
+  justify-content: space-around;
+}
+
+/* Style for form groups not within a form array */
+.form-group:not(.form-array-control .form-group) {
+  display: flex;
+  gap: 5rem;
+  flex-wrap: wrap;
+}
+
+.form-array-control {
+  display: flex;
+  align-items: center;
+  padding: 1rem;
+  border: 1px solid black;
+  margin-top: 1rem;
+
+  > *:not(button) {
+    flex: 1;
+  }
+}

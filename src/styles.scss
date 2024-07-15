@@ -1,1 +1,131 @@
 /* You can add global styles to this file, and also import other style files */
+@tailwind components;
+@tailwind utilities;
+
+html,
+body {
+  height: 100%;
+}
+body {
+  margin: 0;
+  font-family: Roboto, "Helvetica Neue", sans-serif;
+}
+
+:root {
+  --mat-table-header-headline-size: 1rem;
+  --mat-table-header-headline-color: black;
+  /** form fields **/
+  --mat-form-field-container-text-size: 1.125rem;
+  /** dialog labels for form fields **/
+  --mdc-dialog-subhead-line-height: normal;
+  --mdc-dialog-supporting-text-size: 1.125rem;
+  --mdc-dialog-supporting-text-weight: 500;
+  --mat-dialog-with-actions-content-padding: 2rem;
+  /** buttons **/
+  --mdc-text-button-label-text-size: 1.125rem;
+  --mdc-text-button-container-height: 60px;
+
+  /** mat-tab **/
+  --mat-tab-header-label-text-size: 1.125rem;
+}
+
+.mat-mdc-form-field-subscript-wrapper .mat-mdc-form-field-error-wrapper {
+  padding: 0;
+}
+
+.mdc-button.mat-mdc-button {
+  border-radius: 1rem;
+  min-width: 10rem;
+
+  &.button-success {
+    color: white;
+    background-color: #22c55e;
+  }
+
+  &.button-cancel {
+    color: red;
+    background-color: white;
+    border: 1px solid red;
+  }
+
+  &.button-manage {
+    color: white;
+    background-color: #005cbb;
+  }
+
+  &.button-delete {
+    color: white;
+    background-color: #ba1a1a;
+  }
+}
+
+.mat-icon.icon-white {
+  color: white;
+}
+
+.mat-icon.icon-red {
+  color: red;
+}
+
+.mat-icon.icon-white {
+  color: white;
+}
+
+.mdc-button .mat-icon.icon {
+  font-size: 1.5rem;
+  height: 1.5rem;
+  width: 1.5rem;
+}
+
+/** reset element styles **/
+ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+a {
+  text-decoration: none;
+}
+
+router-outlet.router-flex + * {
+  display: flex;
+  flex: 1 1 auto;
+  flex-direction: column;
+}
+
+/** remove mat dialog rounded corners **/
+.mat-mdc-dialog-inner-container .mat-mdc-dialog-surface {
+  border-radius: 0;
+}
+
+/** snackbar **/
+.custom-snackbar .mat-mdc-snack-bar-container .mdc-snackbar__surface {
+  border-radius: 8px !important;
+}
+
+/* .custom-snackbar {
+  .mat-mdc-snack-bar-container .mdc-snackbar__surface {
+    border-radius: 8px !important;
+  }
+
+  .mat-mdc-button.mat-mdc-snack-bar-action {
+    color: white !important;
+  }
+} */
+
+mat-snack-bar-container.snackbar-success .mdc-snackbar__surface {
+  background-color: #22c55e;
+  border-radius: 8px;
+  color: white;
+
+  .mat-mdc-snack-bar-actions .mat-mdc-snack-bar-action {
+    color: white;
+  }
+}
+
+mat-snack-bar-container.snackbar-error .mdc-snackbar__surface {
+  background-color: red;
+  border-radius: 8px;
+  color: white;
+}
