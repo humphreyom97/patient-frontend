@@ -25,6 +25,7 @@ import { patientDataTabs } from '../data/patient-schema';
 import { MatRadioModule } from '@angular/material/radio';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { provideNativeDateAdapter } from '@angular/material/core';
+import { PersonalInfoComponent } from '../personal-info/personal-info.component';
 
 @Component({
   selector: 'app-patient-details',
@@ -42,6 +43,7 @@ import { provideNativeDateAdapter } from '@angular/material/core';
     DynamicFormComponent,
     MatRadioModule,
     MatDatepickerModule,
+    PersonalInfoComponent,
   ],
   providers: [provideNativeDateAdapter()],
   templateUrl: './patient-details.component.html',
@@ -117,7 +119,15 @@ export class PatientDetailsComponent implements OnInit {
           this.createFormGroupConfig(field.fields)
         );
       } else if (field.type === 'Array' && field.fields) {
-        formGroupConfig[key] = this.formBuilder.array([]);
+        const formArray: any = this.formBuilder.array([]);
+        // for each array item, create a form group with fields
+        this.patientData[key].forEach((data: any) => {
+          formArray.push(
+            this.formBuilder.group(this.createFormGroupConfig(field.fields))
+          );
+        });
+
+        formGroupConfig[key] = formArray;
       } else {
         formGroupConfig[key] = [
           '',
@@ -130,28 +140,7 @@ export class PatientDetailsComponent implements OnInit {
   }
 
   populateFormWithData() {
-    Object.keys(this.patientData).forEach((key) => {
-      console.log('key here', key);
-      if (Array.isArray(this.patientData[key])) {
-        this.populateFormArrayData(key, this.patientData[key]);
-      } else if (
-        typeof this.patientData[key] === 'object' &&
-        this.patientData[key] !== null &&
-        !Array.isArray(this.patientData[key])
-      ) {
-        this.patientForm.get(key)?.patchValue(this.patientData[key]);
-      } else {
-        this.patientForm.get(key)?.setValue(this.patientData[key]);
-      }
-    });
-  }
-
-  populateFormArrayData(arrayName: string, arrayData: any[]) {
-    const formArray = this.patientForm.get(arrayName) as FormArray;
-    formArray.clear();
-    arrayData.forEach((item) => {
-      formArray.push(this.formBuilder.group(item));
-    });
+    this.patientForm.patchValue(this.patientData);
   }
 
   toggleEditMode(): void {
@@ -160,8 +149,8 @@ export class PatientDetailsComponent implements OnInit {
 
   cancelEditMode(): void {
     this.editMode = !this.editMode;
-    // reset form data to original and remove unsaved changes
-    this.populateFormWithData();
+    // create form from scratch to cancel unsaved changes
+    this.createPatientsForm();
   }
 
   savePatient() {

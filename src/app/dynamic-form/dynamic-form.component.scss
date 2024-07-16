@@ -6,13 +6,6 @@
   justify-content: space-around;
 }
 
-/* Style for form groups not within a form array */
-.form-group:not(.form-array-control .form-group) {
-  display: flex;
-  gap: 5rem;
-  flex-wrap: wrap;
-}
-
 .form-array-control {
   display: flex;
   align-items: center;

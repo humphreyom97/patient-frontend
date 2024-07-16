@@ -129,3 +129,12 @@ mat-snack-bar-container.snackbar-error .mdc-snackbar__surface {
   border-radius: 8px;
   color: white;
 }
+
+/** fix form field error not being responsive **/
+div.mat-mdc-form-field-subscript-wrapper div.mat-mdc-form-field-error-wrapper {
+  position: relative;
+}
+
+div.mat-mdc-form-field-bottom-align::before {
+  content: none;
+}

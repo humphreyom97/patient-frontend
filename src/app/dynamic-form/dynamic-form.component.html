@@ -2,6 +2,7 @@
 <ng-template #formGroupTemplate let-parentForm="parentForm">
   <div class="form-group">
     <ng-container *ngFor="let control of getFormGroupControls(parentForm)">
+      <!-- Don't show ID fields -->
       <div
         *ngIf="
           isFormControl(parentForm.get(control)) &&
@@ -39,7 +40,15 @@
 
 <!-- If parent form is a form array i.e can add/remove child form groups -->
 <ng-container *ngIf="isFormArray(parentForm)">
-  <div>
+  <div class="grid">
+    <button
+      mat-button
+      class="button-success mr-8 justify-self-end"
+      (click)="addFormGroup(schemaKey)"
+      *ngIf="editMode"
+    >
+      Add New Entry
+    </button>
     <div
       *ngFor="
         let childFormGroup of getFormArrayControls(parentForm);
@@ -60,6 +69,7 @@
         mat-button
         class="button-delete mr-4 self-end mb-5"
         (click)="removeFormGroup(parentForm, i)"
+        *ngIf="editMode"
       >
         <mat-icon color="warn" class="cursor-pointer icon-white"
           >close</mat-icon
@@ -67,7 +77,5 @@
         Delete Entry
       </button>
     </div>
-
-    <button (click)="addFormGroup(schemaKey)">Add</button>
   </div>
 </ng-container>

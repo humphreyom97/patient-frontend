@@ -5,13 +5,9 @@
         <div class="flex-1 flex justify-end">
           <h1 class="text-2xl font-bold">Patient Details</h1>
         </div>
-        <div class="flex flex-1 flex-wrap justify-end">
+        <div class="flex flex-1 flex-wrap justify-end gap-4">
           <ng-container *ngIf="!editMode">
-            <button
-              mat-button
-              class="button-manage mr-4"
-              (click)="toggleEditMode()"
-            >
+            <button mat-button class="button-manage" (click)="toggleEditMode()">
               <mat-icon color="primary" class="cursor-pointer icon icon-white"
                 >edit</mat-icon
               >Edit
@@ -19,11 +15,7 @@
           </ng-container>
 
           <ng-container *ngIf="editMode">
-            <button
-              mat-button
-              class="button-success mr-4"
-              (click)="savePatient()"
-            >
+            <button mat-button class="button-success" (click)="savePatient()">
               <mat-icon color="primary" class="cursor-pointer icon icon-white"
                 >check</mat-icon
               >Save Changes
@@ -31,22 +23,14 @@
           </ng-container>
 
           <ng-container *ngIf="editMode">
-            <button
-              mat-button
-              class="button-cancel mr-4"
-              (click)="cancelEditMode()"
-            >
+            <button mat-button class="button-cancel" (click)="cancelEditMode()">
               <mat-icon color="primary" class="cursor-pointer icon icon-red"
                 >cancel</mat-icon
               >Cancel
             </button>
           </ng-container>
 
-          <button
-            mat-button
-            class="button-delete mr-4"
-            (click)="deletePatient()"
-          >
+          <button mat-button class="button-delete" (click)="deletePatient()">
             <mat-icon color="warn" class="cursor-pointer icon icon-white"
               >delete</mat-icon
             >
@@ -61,245 +45,11 @@
           <div
             class="flex flex-col flex-1 justify-evenly p-4 text-black text-base font-medium"
           >
-            <ng-container
-              *ngIf="patientForm?.get('personalInfo') as personalInfo"
-            >
-              <div formGroupName="personalInfo">
-                <div class="grid grid-cols-3 p-4">
-                  <div class="col-span-3 md:col-span-1 mr-3">
-                    <mat-label class="block mb-4">
-                      <span
-                        *ngIf="
-                          personalInfo.get('firstName')?.hasError('required')
-                        "
-                        class="asterisk"
-                        >*</span
-                      >First name:</mat-label
-                    >
-                    <mat-form-field appearance="outline" class="w-full">
-                      <input
-                        matInput
-                        formControlName="firstName"
-                        [required]="true"
-                      />
-                      <mat-error
-                        *ngIf="
-                          patientForm
-                            .get('personalInfo.firstName')
-                            ?.hasError('required')
-                        "
-                        class="text-base"
-                      >
-                        First Name is required
-                      </mat-error>
-                    </mat-form-field>
-                  </div>
-                  <div class="col-span-3 md:col-span-1 mr-3">
-                    <mat-label class="block mb-4 text-black">
-                      <span
-                        *ngIf="
-                          personalInfo.get('lastName')?.hasError('required')
-                        "
-                        class="asterisk"
-                        >*</span
-                      >Last Name:</mat-label
-                    >
-                    <mat-form-field appearance="outline" class="w-full">
-                      <input
-                        matInput
-                        placeholder="i.e. Doe"
-                        formControlName="lastName"
-                      />
-                      <mat-error
-                        *ngIf="
-                          patientForm
-                            .get('personalInfo.lastName')
-                            ?.hasError('required')
-                        "
-                        class="text-base"
-                      >
-                        Last Name is required
-                      </mat-error>
-                    </mat-form-field>
-                  </div>
-                  <div
-                    class="col-span-3 md:col-span-1 mr-3 justify-self-center"
-                  >
-                    <mat-label class="block mb-4 text-black text-center"
-                      >Gender:</mat-label
-                    >
-                    <mat-radio-group
-                      aria-label="Select an option"
-                      formControlName="gender"
-                      class="w-full"
-                    >
-                      <mat-radio-button value="male">Male</mat-radio-button>
-                      <mat-radio-button value="female">Female</mat-radio-button>
-                      <mat-error
-                        *ngIf="
-                          patientForm
-                            .get('personalInfo.gender')
-                            ?.hasError('required')
-                        "
-                        class="text-base font-normal"
-                      >
-                        Gender is required
-                      </mat-error>
-                    </mat-radio-group>
-                  </div>
-                </div>
-
-                <div class="grid grid-cols-4 p-4">
-                  <div class="col-span-4 md:col-span-1 mr-3">
-                    <mat-label class="block mb-4 text-black"
-                      ><span
-                        *ngIf="personalInfo.get('dob')?.hasError('required')"
-                        class="asterisk"
-                        >*</span
-                      >Date of birth:</mat-label
-                    >
-                    <mat-form-field appearance="outline" class="w-full">
-                      <input
-                        matInput
-                        [matDatepicker]="picker"
-                        formControlName="dob"
-                        placeholder="Choose a date"
-                      />
-                      <mat-hint>DD/MM/YYYY</mat-hint>
-                      <mat-datepicker-toggle
-                        matIconSuffix
-                        [for]="picker"
-                      ></mat-datepicker-toggle>
-                      <mat-datepicker #picker></mat-datepicker>
-                      <mat-error
-                        *ngIf="
-                          patientForm
-                            .get('personalInfo.dob')
-                            ?.hasError('required')
-                        "
-                        class="text-base"
-                      >
-                        Date of Birth is required
-                      </mat-error>
-                    </mat-form-field>
-                  </div>
-
-                  <ng-container formGroupName="contactInfo">
-                    <div class="col-span-4 md:col-span-1 mr-3">
-                      <mat-label class="block mb-4 text-black"
-                        >Address:</mat-label
-                      >
-                      <mat-form-field appearance="outline" class="w-full">
-                        <input
-                          matInput
-                          placeholder="i.e. Cork, Ireland"
-                          formControlName="address"
-                        />
-                        <mat-error
-                          *ngIf="
-                            patientForm
-                              .get('personalInfo.contactInfo.address')
-                              ?.hasError('required')
-                          "
-                          class="text-base"
-                        >
-                          Address is required
-                        </mat-error>
-                      </mat-form-field>
-                    </div>
-
-                    <div class="col-span-4 md:col-span-1 mr-3">
-                      <mat-label class="block mb-4 text-black"
-                        >Phone:</mat-label
-                      >
-                      <mat-form-field appearance="outline" class="w-full">
-                        <input matInput formControlName="phone" />
-                        <mat-error
-                          *ngIf="
-                            patientForm
-                              .get('personalInfo.contactInfo.phone')
-                              ?.hasError('required')
-                          "
-                          class="text-base"
-                        >
-                          Phone Number is required
-                        </mat-error>
-                      </mat-form-field>
-                    </div>
-
-                    <div class="col-span-4 md:col-span-1 mr-3">
-                      <mat-label class="block mb-4 text-black"
-                        >Email:</mat-label
-                      >
-                      <mat-form-field appearance="outline" class="w-full">
-                        <input matInput formControlName="email" />
-                        <mat-error
-                          *ngIf="
-                            patientForm
-                              .get('personalInfo.contactInfo.email')
-                              ?.hasError('required')
-                          "
-                          class="text-base"
-                        >
-                          Email is required
-                        </mat-error>
-                      </mat-form-field>
-                    </div>
-                  </ng-container>
-                </div>
-              </div>
-            </ng-container>
-
-            <!-- <p class="text-base">
-              <strong class="mr-2">First Name:</strong>
-              <span *ngIf="patient?.personalInfo?.firstName">{{
-                patient.personalInfo.firstName
-              }}</span>
-            </p>
-            <p class="text-base">
-              <strong class="mr-2">Last Name:</strong>
-              <span *ngIf="patient?.personalInfo?.lastName">{{
-                patient.personalInfo.lastName
-              }}</span>
-            </p>
-            <p class="text-base">
-              <strong class="mr-2">Gender:</strong>
-              <span *ngIf="patient?.personalInfo?.gender">{{
-                patient?.personalInfo?.gender
-              }}</span>
-            </p>
-            <p class="text-base">
-              <strong class="mr-2">Date of Birth:</strong>
-              <span *ngIf="patient?.personalInfo?.dob">{{
-                patient.personalInfo.dob | date
-              }}</span>
-            </p> -->
+            <app-personal-info
+              [patientForm]="patientForm"
+              [editMode]="editMode"
+            ></app-personal-info>
           </div>
-          <!-- <div class="flex flex-col flex-1 justify-evenly p-4">
-            <h2 class="text-xl font-semibold mt-4 mb-2">Contact Information</h2>
-            <p class="text-base">
-              <strong class="mr-2">Email:</strong>
-              <span
-                *ngIf="patient?.personalInfo?.contactInfo?.email; else noData"
-                >{{ patient.personalInfo.contactInfo.email }}</span
-              >
-            </p>
-            <p class="text-base">
-              <strong class="mr-2">Phone:</strong>
-              <span
-                *ngIf="patient?.personalInfo?.contactInfo?.phone; else noData"
-                >{{ patient.personalInfo.contactInfo.phone || "N/A" }}</span
-              >
-            </p>
-            <p class="text-base">
-              <strong class="mr-2">Address:</strong>
-              <span
-                *ngIf="patient?.personalInfo?.contactInfo?.address; else noData"
-                >{{ patient.personalInfo.contactInfo.address || "N/A" }}</span
-              >
-            </p>
-            <ng-template #noData>N/A</ng-template>
-          </div> -->
         </div>
       </div>
 
