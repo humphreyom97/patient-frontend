@@ -13,7 +13,8 @@ import { PatientAddEditComponent } from '../patient-add-edit/patient-add-edit.co
 import { MatTableModule } from '@angular/material/table';
 import { PatientService } from '../services/patient.service';
 import { MatButtonModule } from '@angular/material/button';
-import { Router, RouterModule } from '@angular/router';
+import { RouterModule } from '@angular/router';
+import { HeaderComponent } from '../header/header.component';
 
 @Component({
   selector: 'app-home',
@@ -29,18 +30,20 @@ import { Router, RouterModule } from '@angular/router';
     MatTableModule,
     MatButtonModule,
     RouterModule,
+    HeaderComponent,
   ],
   templateUrl: './home.component.html',
   styleUrl: './home.component.scss',
 })
 export class HomeComponent implements OnInit {
+  // table column keys
   displayedColumns: string[] = [
-    'firstName',
-    'lastName',
-    'gender',
-    'dob',
-    'address',
-    'phone',
+    'personalInfo.firstName',
+    'personalInfo.lastName',
+    'personalInfo.gender',
+    'personalInfo.dob',
+    'personalInfo.contactInfo.address',
+    'personalInfo.contactInfo.phone',
     'action',
   ];
 
@@ -49,11 +52,9 @@ export class HomeComponent implements OnInit {
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild(MatSort) sort!: MatSort;
 
-  // dependency injection
   constructor(
     private dialog: MatDialog,
-    private patientService: PatientService,
-    private router: Router
+    private patientService: PatientService
   ) {}
 
   ngOnInit(): void {
@@ -65,6 +66,7 @@ export class HomeComponent implements OnInit {
     dialogRef.afterClosed().subscribe({
       next: (val) => {
         if (val) {
+          // refresh list to show updates
           this.getPatientList();
         }
       },
@@ -74,18 +76,10 @@ export class HomeComponent implements OnInit {
   getPatientList() {
     this.patientService.getPatientList().subscribe({
       next: (res: any[]) => {
-        const transformedData = res.map((patient) => ({
-          firstName: patient.personalInfo.firstName,
-          lastName: patient.personalInfo.lastName,
-          dob: patient.personalInfo.dob,
-          gender: patient.personalInfo.gender,
-          Address: patient.personalInfo.contactInfo.address,
-          Phone: patient.personalInfo.contactInfo.phone,
-        }));
         this.dataSource = new MatTableDataSource(res);
+        this.addNestedObjectSort();
         this.dataSource.sort = this.sort;
         this.dataSource.paginator = this.paginator;
-        console.log('res', res);
       },
       error: (err) => {
         console.log(err);
@@ -93,7 +87,20 @@ export class HomeComponent implements OnInit {
     });
   }
 
-  // table filter
+  addNestedObjectSort() {
+    this.dataSource.sortingDataAccessor = (item, property) => {
+      if (property.includes('.')) {
+        // Split the property path into individual keys
+        const keys = property.split('.');
+        // Reduce the keys array to navigate through the nested object
+        return keys.reduce((nestedObject, key) => nestedObject[key], item);
+      } else {
+        // Directly access the property if it's not nested
+        return item[property];
+      }
+    };
+  }
+
   applyFilter(event: Event) {
     const filterValue = (event.target as HTMLInputElement).value;
     this.dataSource.filter = filterValue.trim().toLowerCase();
@@ -102,21 +109,13 @@ export class HomeComponent implements OnInit {
     }
   }
 
-  viewPatientDetails(patientId: string) {
-    // Assuming you have a route defined for patient details with a parameter (patientId)
-    this.router.navigate(['/patient/details', patientId]);
-  }
-
-  openEditForm(data: any) {
-    const dialogRef = this.dialog.open(PatientAddEditComponent, {
-      data,
-    });
-
-    dialogRef.afterClosed().subscribe({
-      next: (val) => {
-        if (val) {
-          this.getPatientList();
-        }
+  resetPatientsData() {
+    this.patientService.resetPatientsData().subscribe({
+      next: () => {
+        this.getPatientList();
+      },
+      error: (err) => {
+        console.log(err);
       },
     });
   }

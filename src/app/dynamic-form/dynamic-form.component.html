@@ -10,22 +10,79 @@
           control !== '__v'
         "
       >
-        <mat-label class="block mb-4 text-black font-medium">{{
-          getLabel(control)
-        }}</mat-label>
-        <mat-form-field appearance="outline">
-          <input
-            matInput
-            [formControl]="getFormControl(control, parentForm)"
-            [readonly]="!editMode"
-          />
-          <mat-error
-            *ngIf="parentForm.get(control)?.hasError('required')"
-            class="text-base"
-          >
-            {{ getLabel(control) }} is required
-          </mat-error>
-        </mat-form-field>
+        <mat-label class="block mb-4 text-black font-medium"
+          >{{ getLabel(control) }}:</mat-label
+        >
+
+        <!-- Display textarea for controls with data type of string -->
+        <ng-container
+          *ngIf="
+            findKeyType(schema, control) === 'String' && control !== 'time'
+          "
+        >
+          <mat-form-field appearance="outline">
+            <textarea
+              matInput
+              cdkTextareaAutosize
+              #autosize="cdkTextareaAutosize"
+              [formControl]="getFormControl(control, parentForm)"
+              [readonly]="!editMode"
+              class="max-h-[300px]"
+            ></textarea>
+            <mat-error
+              *ngIf="parentForm.get(control)?.hasError('required')"
+              class="text-base"
+            >
+              {{ getLabel(control) }} is required
+            </mat-error>
+          </mat-form-field>
+        </ng-container>
+
+        <!-- Display textarea for controls with data type of string -->
+        <ng-container
+          *ngIf="
+            findKeyType(schema, control) === 'String' && control === 'time'
+          "
+        >
+          <mat-form-field appearance="outline" class="w-full">
+            <input
+              matInput
+              type="time"
+              [formControl]="getFormControl(control, parentForm)"
+              [readonly]="!editMode"
+            />
+            <mat-error
+              *ngIf="parentForm.get(control)?.hasError('required')"
+              class="text-base"
+            >
+              {{ getLabel(control) }} is required
+            </mat-error>
+          </mat-form-field>
+        </ng-container>
+
+        <!-- Display Datepicker for controls with data type of Date -->
+        <ng-container *ngIf="findKeyType(schema, control) === 'Date'">
+          <mat-form-field appearance="outline">
+            <input
+              matInput
+              [matDatepicker]="picker"
+              [formControl]="getFormControl(control, parentForm)"
+              [readonly]="!editMode"
+            />
+            <mat-hint>DD/MM/YYYY</mat-hint>
+            <mat-datepicker-toggle
+              matIconSuffix
+              [for]="picker"
+            ></mat-datepicker-toggle>
+            <mat-datepicker #picker [disabled]="!editMode"></mat-datepicker>
+            <mat-error
+              *ngIf="parentForm.get(control)?.hasError('required')"
+              class="text-base"
+            >
+              {{ getLabel(control) }} is required
+            </mat-error>
+          </mat-form-field>
+        </ng-container>
       </div>
     </ng-container>
   </div>
@@ -67,7 +124,7 @@
 
       <button
         mat-button
-        class="button-delete mr-4 self-end mb-5"
+        class="button-delete self-center mt-7"
         (click)="removeFormGroup(parentForm, i)"
         *ngIf="editMode"
       >

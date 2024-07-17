@@ -31,7 +31,7 @@ export class PatientService {
     return this.httpClient.delete(`${this.apiUrl}/${id}`);
   }
 
-  getPatientSchemaMetadata(): Observable<any> {
-    return this.httpClient.get(`${this.apiUrl}/schema`);
+  resetPatientsData(): Observable<any> {
+    return this.httpClient.post(`${this.apiUrl}/resetPatients`, {});
   }
 }

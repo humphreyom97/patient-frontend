@@ -1,17 +1,15 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
+import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 import { PatientService } from '../services/patient.service';
 import { CommonModule } from '@angular/common';
 import { MatTabsModule } from '@angular/material/tabs';
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
 import { MatDialog } from '@angular/material/dialog';
-import { PatientAddEditComponent } from '../patient-add-edit/patient-add-edit.component';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { MatCardModule } from '@angular/material/card';
 import { MatListModule } from '@angular/material/list';
 import {
-  FormArray,
   FormBuilder,
   FormGroup,
   ReactiveFormsModule,
@@ -26,6 +24,8 @@ import { MatRadioModule } from '@angular/material/radio';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { provideNativeDateAdapter } from '@angular/material/core';
 import { PersonalInfoComponent } from '../personal-info/personal-info.component';
+import { PatientDeleteComponent } from '../patient-delete/patient-delete.component';
+import { HeaderComponent } from '../header/header.component';
 
 @Component({
   selector: 'app-patient-details',
@@ -44,6 +44,9 @@ import { PersonalInfoComponent } from '../personal-info/personal-info.component'
     MatRadioModule,
     MatDatepickerModule,
     PersonalInfoComponent,
+    PatientDeleteComponent,
+    HeaderComponent,
+    RouterModule,
   ],
   providers: [provideNativeDateAdapter()],
   templateUrl: './patient-details.component.html',
@@ -105,6 +108,7 @@ export class PatientDetailsComponent implements OnInit {
     const formGroupConfig = this.createFormGroupConfig(this.schema);
     // create form structure with no data
     this.patientForm = this.formBuilder.group(formGroupConfig);
+    console.log('testing', this.patientForm);
     // add data to form structure
     this.populateFormWithData();
   }
@@ -174,44 +178,32 @@ export class PatientDetailsComponent implements OnInit {
       });
   }
 
-  openAddEditPatientDialog() {
-    const dialogRef = this.dialog.open(PatientAddEditComponent, {
+  openPatientDeleteComponentDialog() {
+    const dialogRef = this.dialog.open(PatientDeleteComponent, {
       data: this.patientData,
+      autoFocus: false,
     });
-    dialogRef.afterClosed().subscribe({
-      next: (val) => {
-        if (val) {
-          this.getPatientDetails();
-        }
-      },
+
+    dialogRef.componentInstance.deletePatientEvent.subscribe(() => {
+      this.deletePatient();
     });
   }
 
   deletePatient() {
-    if (true) {
-      this.snackBar.open('Patient deleted successfully!', 'Close', {
-        horizontalPosition: 'end',
-        verticalPosition: 'top',
-        duration: 300000, // Duration in milliseconds
-        panelClass: ['custom-snackbar', 'snackbar-success'], // Optional: Custom CSS class for styling
-      });
-    } else {
-      let confirm = window.confirm(
-        'Are you sure you want to delete this patient?'
-      );
-      if (confirm) {
-        this.patientService.deletePatient(this.patientId).subscribe({
-          next: (res) => {
-            alert('Patient deleted!');
-            // Navigate back to the /patients route
-            this.router.navigate(['/patients']);
-            // this.getPatientList();
-          },
-          error: (err) => {
-            console.log(err);
-          },
+    this.patientService.deletePatient(this.patientId).subscribe({
+      next: () => {
+        this.snackBar.open('Patient deleted successfully!', 'Close', {
+          horizontalPosition: 'end',
+          verticalPosition: 'top',
+          duration: 5000, // Duration in milliseconds
+          panelClass: ['custom-snackbar', 'snackbar-success'],
         });
-      }
-    }
+        // Navigate back to the /patients route
+        this.router.navigate(['/patients']);
+      },
+      error: (err) => {
+        console.log(err);
+      },
+    });
   }
 }

@@ -10,11 +10,7 @@
         <div class="flex-1 min-w-[50%] mr-3">
           <mat-label class="block mb-4 text-black">First name:</mat-label>
           <mat-form-field appearance="outline" class="w-full">
-            <input
-              matInput
-              placeholder="i.e. John"
-              formControlName="firstName"
-            />
+            <input matInput formControlName="firstName" />
             <mat-error
               *ngIf="
                 patientForm.get('personalInfo.firstName')?.hasError('required')
@@ -28,7 +24,7 @@
         <div class="flex-1 min-w-[50%] mr-3">
           <mat-label class="block mb-4 text-black">Last Name:</mat-label>
           <mat-form-field appearance="outline" class="w-full">
-            <input matInput placeholder="i.e. Doe" formControlName="lastName" />
+            <input matInput formControlName="lastName" />
             <mat-error
               *ngIf="
                 patientForm.get('personalInfo.lastName')?.hasError('required')
@@ -64,12 +60,7 @@
         <div class="flex-1 min-w-[50%] mr-3">
           <mat-label class="block mb-4 text-black">Date of birth:</mat-label>
           <mat-form-field appearance="outline" class="w-full">
-            <input
-              matInput
-              [matDatepicker]="picker"
-              formControlName="dob"
-              placeholder="Choose a date"
-            />
+            <input matInput [matDatepicker]="picker" formControlName="dob" />
             <mat-hint>DD/MM/YYYY</mat-hint>
             <mat-datepicker-toggle
               matIconSuffix
@@ -89,21 +80,7 @@
         <div class="flex-1 min-w-[50%] mr-3">
           <mat-label class="block mb-4 text-black">Address:</mat-label>
           <mat-form-field appearance="outline" class="w-full">
-            <input
-              matInput
-              placeholder="i.e. Cork, Ireland"
-              formControlName="address"
-            />
-            <mat-error
-              *ngIf="
-                patientForm
-                  .get('personalInfo.contactInfo.address')
-                  ?.hasError('required')
-              "
-              class="text-base"
-            >
-              Address is required
-            </mat-error>
+            <input matInput formControlName="address" />
           </mat-form-field>
         </div>
 
@@ -111,16 +88,6 @@
           <mat-label class="block mb-4 text-black">Phone:</mat-label>
           <mat-form-field appearance="outline" class="w-full">
             <input matInput formControlName="phone" />
-            <mat-error
-              *ngIf="
-                patientForm
-                  .get('personalInfo.contactInfo.phone')
-                  ?.hasError('required')
-              "
-              class="text-base"
-            >
-              Phone Number is required
-            </mat-error>
           </mat-form-field>
         </div>
       </div>

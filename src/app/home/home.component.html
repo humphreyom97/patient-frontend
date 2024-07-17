@@ -1,7 +1,19 @@
-<!-- The body of our app -->
+<app-header></app-header>
+
 <div class="flex flex-col flex-1 p-4">
   <div class="min-w-[80%] self-center">
     <div class="flex justify-end mb-4">
+      <!-- Refresh Data button -->
+      <button
+        mat-button
+        class="button-manage mr-4"
+        (click)="resetPatientsData()"
+      >
+        <mat-icon color="primary" class="icon icon-white">refresh</mat-icon>
+        Reset Data
+      </button>
+
+      <!-- Add Patient button -->
       <button
         mat-button
         class="button-success"
@@ -12,7 +24,7 @@
       </button>
     </div>
 
-    <!-- The filter section -->
+    <!-- Table Filter-->
     <mat-form-field aria-haspopup="outline">
       <mat-label class="text-base font-medium text-black">Filter</mat-label>
       <input
@@ -22,17 +34,12 @@
         #input
       />
     </mat-form-field>
+
     <!-- patient list table -->
     <div class="table-container">
       <mat-table [dataSource]="dataSource" matSort class="flex flex-col">
-        <!-- Display columns -->
-        <ng-container matColumnDef="id">
-          <mat-header-cell *matHeaderCellDef mat-sort-header
-            >ID</mat-header-cell
-          >
-          <mat-cell *matCellDef="let row">{{ row.id }}</mat-cell>
-        </ng-container>
-        <ng-container matColumnDef="firstName">
+        <!-- First Name column -->
+        <ng-container matColumnDef="personalInfo.firstName">
           <mat-header-cell *matHeaderCellDef mat-sort-header
             >First Name</mat-header-cell
           >
@@ -40,7 +47,9 @@
             row.personalInfo.firstName
           }}</mat-cell>
         </ng-container>
-        <ng-container matColumnDef="lastName">
+
+        <!-- Last Name column -->
+        <ng-container matColumnDef="personalInfo.lastName">
           <mat-header-cell *matHeaderCellDef mat-sort-header
             >Last Name</mat-header-cell
           >
@@ -48,7 +57,9 @@
             row.personalInfo.lastName
           }}</mat-cell>
         </ng-container>
-        <ng-container matColumnDef="gender">
+
+        <!-- Gender column -->
+        <ng-container matColumnDef="personalInfo.gender">
           <mat-header-cell *matHeaderCellDef mat-sort-header
             >Gender</mat-header-cell
           >
@@ -56,15 +67,19 @@
             row.personalInfo.gender
           }}</mat-cell>
         </ng-container>
-        <ng-container matColumnDef="dob">
+
+        <!-- Date of Birth column -->
+        <ng-container matColumnDef="personalInfo.dob">
           <mat-header-cell *matHeaderCellDef mat-sort-header
-            >DOB</mat-header-cell
+            >Date of Birth</mat-header-cell
           >
           <mat-cell *matCellDef="let row">
             {{ row.personalInfo.dob | date : "MMMM d, y" }}
           </mat-cell>
         </ng-container>
-        <ng-container matColumnDef="address">
+
+        <!-- Address column -->
+        <ng-container matColumnDef="personalInfo.contactInfo.address">
           <mat-header-cell *matHeaderCellDef mat-sort-header
             >Address</mat-header-cell
           >
@@ -72,7 +87,9 @@
             row.personalInfo.contactInfo.address || "---"
           }}</mat-cell>
         </ng-container>
-        <ng-container matColumnDef="phone">
+
+        <!-- Phone column -->
+        <ng-container matColumnDef="personalInfo.contactInfo.phone">
           <mat-header-cell *matHeaderCellDef mat-sort-header
             >Phone</mat-header-cell
           >
@@ -80,6 +97,8 @@
             row.personalInfo.contactInfo.phone
           }}</mat-cell>
         </ng-container>
+
+        <!-- Action column -->
         <ng-container matColumnDef="action">
           <mat-header-cell
             *matHeaderCellDef
@@ -90,7 +109,7 @@
           <mat-cell *matCellDef="let row" class="justify-center">
             <button
               mat-button
-              class="button-manage"
+              class="button-manage my-4 rounded-none"
               routerLink="/patient/details/{{ row._id }}"
             >
               Manage Patient
@@ -101,9 +120,9 @@
         <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
         <mat-row *matRowDef="let row; columns: displayedColumns"></mat-row>
 
-        <!-- When table results empty -->
-
+        <!-- No Table Results -->
         <tr *matNoDataRow class="w-full flex justify-center">
+          <!-- No table data-->
           <ng-container *ngIf="!dataSource.data.length">
             <td
               class="text-base content-center h-48"
@@ -112,6 +131,7 @@
               No data available.
             </td>
           </ng-container>
+
           <!-- No filter result -->
           <ng-container
             *ngIf="dataSource.data.length && !dataSource.filteredData.length"

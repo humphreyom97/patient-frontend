@@ -49,6 +49,7 @@ export const patientDataTranslation: {
   { dataKey: 'bloodPressure', displayValue: 'Blood Pressure' },
   { dataKey: 'heartRate', displayValue: 'Heart Rate' },
   { dataKey: 'temperature', displayValue: 'Temperature' },
+  { dataKey: 'provider', displayValue: 'Provider' },
   { dataKey: 'policyNumber', displayValue: 'Policy Number' },
   { dataKey: 'validUntil', displayValue: 'Valid Until' },
   { dataKey: 'relation', displayValue: 'Relation' },

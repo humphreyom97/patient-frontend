@@ -1,44 +1,57 @@
-<div class="flex flex-col flex-1 p-4">
+<div class="flex flex-col flex-1">
   <ng-container *ngIf="patientForm">
-    <form [formGroup]="patientForm">
-      <div class="flex flex-wrap items-center my-4">
-        <div class="flex-1 flex justify-end">
-          <h1 class="text-2xl font-bold">Patient Details</h1>
-        </div>
-        <div class="flex flex-1 flex-wrap justify-end gap-4">
-          <ng-container *ngIf="!editMode">
-            <button mat-button class="button-manage" (click)="toggleEditMode()">
-              <mat-icon color="primary" class="cursor-pointer icon icon-white"
-                >edit</mat-icon
-              >Edit
-            </button>
-          </ng-container>
-
-          <ng-container *ngIf="editMode">
-            <button mat-button class="button-success" (click)="savePatient()">
-              <mat-icon color="primary" class="cursor-pointer icon icon-white"
-                >check</mat-icon
-              >Save Changes
-            </button>
-          </ng-container>
-
-          <ng-container *ngIf="editMode">
-            <button mat-button class="button-cancel" (click)="cancelEditMode()">
-              <mat-icon color="primary" class="cursor-pointer icon icon-red"
-                >cancel</mat-icon
-              >Cancel
-            </button>
-          </ng-container>
-
-          <button mat-button class="button-delete" (click)="deletePatient()">
-            <mat-icon color="warn" class="cursor-pointer icon icon-white"
-              >delete</mat-icon
-            >
-            Delete
-          </button>
-        </div>
+    <div
+      class="flex flex-wrap items-center fixed w-full h-[150px] z-10 bg-teal-600"
+    >
+      <div>
+        <button mat-button class="button-back" routerLink="/patients">
+          <mat-icon color="primary" class="cursor-pointer icon icon-white"
+            >arrow_back</mat-icon
+          >Back
+        </button>
       </div>
+      <div class="flex-1 flex justify-end">
+        <h1 class="text-4xl font-normal text-white">Patient Details</h1>
+      </div>
+      <div class="flex flex-1 flex-wrap justify-end gap-4 pr-4">
+        <ng-container *ngIf="!editMode">
+          <button mat-button class="button-manage" (click)="toggleEditMode()">
+            <mat-icon color="primary" class="cursor-pointer icon icon-white"
+              >edit</mat-icon
+            >Edit
+          </button>
+        </ng-container>
 
+        <ng-container *ngIf="editMode">
+          <button mat-button class="button-save" (click)="savePatient()">
+            <mat-icon color="primary" class="cursor-pointer icon icon-green"
+              >check</mat-icon
+            >Save Changes
+          </button>
+        </ng-container>
+
+        <ng-container *ngIf="editMode">
+          <button mat-button class="button-cancel" (click)="cancelEditMode()">
+            <mat-icon color="primary" class="cursor-pointer icon icon-red"
+              >cancel</mat-icon
+            >Cancel
+          </button>
+        </ng-container>
+
+        <button
+          mat-button
+          class="button-delete"
+          (click)="openPatientDeleteComponentDialog()"
+        >
+          <mat-icon color="warn" class="cursor-pointer icon icon-white"
+            >delete</mat-icon
+          >
+          Delete
+        </button>
+      </div>
+    </div>
+
+    <form [formGroup]="patientForm" class="mt-[150px]">
       <div class="grid grid-cols-3 w-full mb-4">
         <div class="col-span-3 md:col-span-1 patient-image"></div>
         <div class="col-span-3 md:col-span-2">
@@ -57,14 +70,16 @@
         <mat-tab-group>
           <ng-container *ngFor="let tab of patientDataTabs">
             <mat-tab [label]="tab.displayValue">
-              <div class="p-6">
-                <app-dynamic-form
-                  [parentForm]="patientForm.get(tab.dataKey)"
-                  [schema]="schema"
-                  [schemaKey]="tab.dataKey"
-                  [editMode]="editMode"
-                ></app-dynamic-form>
-              </div>
+              <ng-template matTabContent>
+                <div class="p-6">
+                  <app-dynamic-form
+                    [parentForm]="patientForm.get(tab.dataKey)"
+                    [schema]="schema"
+                    [schemaKey]="tab.dataKey"
+                    [editMode]="editMode"
+                  ></app-dynamic-form>
+                </div>
+              </ng-template>
             </mat-tab>
           </ng-container>
         </mat-tab-group>

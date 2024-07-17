@@ -5,7 +5,7 @@
   <div formGroupName="personalInfo">
     <!-- Personal Info fields -->
     <div class="grid grid-cols-3 p-4">
-      <div class="col-span-3 md:col-span-1 mb-4 mr-4">
+      <div class="col-span-3 md:col-span-1 mb-6 mr-4">
         <mat-label class="block mb-4">
           <span
             *ngIf="personalInfo.get('firstName')?.hasError('required')"
@@ -26,7 +26,7 @@
           </mat-error>
         </mat-form-field>
       </div>
-      <div class="col-span-3 md:col-span-1 mb-4 mr-4">
+      <div class="col-span-3 md:col-span-1 mb-6 mr-4">
         <mat-label class="block mb-4 text-black">
           <span
             *ngIf="personalInfo.get('lastName')?.hasError('required')"
@@ -47,7 +47,7 @@
           </mat-error>
         </mat-form-field>
       </div>
-      <div class="col-span-3 md:col-span-1 justify-self-center mb-4 mr-4">
+      <div class="col-span-3 md:col-span-1 justify-self-center mb-6 mr-4">
         <mat-label class="block mb-4 text-black text-center">Gender:</mat-label>
         <mat-radio-group
           aria-label="Select an option"
@@ -71,7 +71,7 @@
     </div>
 
     <div class="grid grid-cols-4 p-4">
-      <div class="col-span-4 md:col-span-1 mb-4 mr-4">
+      <div class="col-span-4 md:col-span-1 mb-6 mr-4">
         <mat-label class="block mb-4 text-black">
           <span
             *ngIf="personalInfo.get('dob')?.hasError('required')"
@@ -103,7 +103,7 @@
       </div>
 
       <ng-container formGroupName="contactInfo">
-        <div class="col-span-4 md:col-span-1 mb-4 mr-4">
+        <div class="col-span-4 md:col-span-1 mb-6 mr-4">
           <mat-label class="block mb-4 text-black">Address:</mat-label>
           <mat-form-field appearance="outline" class="w-full">
             <input matInput formControlName="address" [readonly]="!editMode" />
@@ -120,10 +120,15 @@
           </mat-form-field>
         </div>
 
-        <div class="col-span-4 md:col-span-1mb-4 mr-4">
+        <div class="col-span-4 md:col-span-1 mb-6 mr-4">
           <mat-label class="block mb-4 text-black">Phone:</mat-label>
           <mat-form-field appearance="outline" class="w-full">
-            <input matInput formControlName="phone" [readonly]="!editMode" />
+            <input
+              matInput
+              type="tel"
+              formControlName="phone"
+              [readonly]="!editMode"
+            />
             <mat-error
               *ngIf="
                 patientForm
@@ -137,7 +142,7 @@
           </mat-form-field>
         </div>
 
-        <div class="col-span-4 md:col-span-1 mb-4 mr-4">
+        <div class="col-span-4 md:col-span-1 mb-6 mr-4">
           <mat-label class="block mb-4 text-black">Email:</mat-label>
           <mat-form-field appearance="outline" class="w-full">
             <input matInput formControlName="email" [readonly]="!editMode" />

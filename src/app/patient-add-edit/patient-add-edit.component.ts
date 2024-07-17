@@ -16,15 +16,6 @@ import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
 import { CommonModule } from '@angular/common';
 
-interface PatientForm {
-  firstName: string;
-  lastName: string;
-  email: string;
-  dob: string;
-  gender: string;
-  address: string;
-}
-
 @Component({
   selector: 'app-patient-add-edit',
   standalone: true,
@@ -60,15 +51,12 @@ export class PatientAddEditComponent implements OnInit {
         gender: ['male', Validators.required],
         dob: ['', Validators.required],
         contactInfo: this.formBuilder.group({
-          address: ['', Validators.required],
-          phone: ['', Validators.required],
+          address: [''],
+          phone: [''],
           email: [''],
         }),
-        profilePicture: [''],
       }),
     });
-
-    console.log('test', this.patientForm);
 
     if (this.data) {
       this.patientForm.patchValue(this.data);
@@ -81,7 +69,7 @@ export class PatientAddEditComponent implements OnInit {
         this.patientService
           .updatePatient(this.data._id, this.patientForm.value)
           .subscribe({
-            next: (val: any) => {
+            next: () => {
               alert('Patient details updated!');
               this.dialogRef.close(true);
             },
