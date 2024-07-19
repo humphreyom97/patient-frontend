@@ -164,11 +164,11 @@ export class PatientDetailsComponent implements OnInit {
         next: (val: any) => {
           this.toggleEditMode();
           this.getPatientDetails();
-          this.snackBar.open('Patient deleted successfully!', 'Close', {
+          this.snackBar.open('Patient updated successfully!', 'Close', {
             horizontalPosition: 'end',
             verticalPosition: 'top',
             duration: 300000, // Duration in milliseconds
-            panelClass: ['custom-snackbar', 'snackbar-success'], // Optional: Custom CSS class for styling
+            panelClass: ['custom-snackbar', 'snackbar-success'],
           });
         },
         error: (err: any) => {
