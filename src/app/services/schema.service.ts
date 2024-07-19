@@ -12,6 +12,6 @@ export class SchemaService {
   constructor(private httpClient: HttpClient) {}
 
   getPatientSchema(): Observable<any> {
-    return this.httpClient.get(`${this.apiUrl}/schema/patients`);
+    return this.httpClient.get(`${this.apiUrl}/schemas/patients`);
   }
 }
