@@ -1,0 +1,169 @@
+<ng-container
+  [formGroup]="patientForm"
+  *ngIf="patientForm?.get('personalInfo') as personalInfo"
+>
+  <div
+    formGroupName="personalInfo"
+    class="p-4 text-black text-base font-medium"
+  >
+    <!-- Personal Info fields -->
+    <div class="grid grid-cols-3 p-4">
+      <div class="col-span-3 md:col-span-1 mb-6 mr-4">
+        <mat-label class="block mb-4">
+          <span
+            *ngIf="personalInfo.get('firstName')?.hasError('required')"
+            class="asterisk"
+            >*</span
+          >
+          First name:
+        </mat-label>
+        <mat-form-field appearance="outline" class="w-full">
+          <input matInput formControlName="firstName" [readonly]="!editMode" />
+          <mat-error
+            *ngIf="
+              patientForm.get('personalInfo.firstName')?.hasError('required')
+            "
+            class="text-base"
+          >
+            First Name is required
+          </mat-error>
+        </mat-form-field>
+      </div>
+      <div class="col-span-3 md:col-span-1 mb-6 mr-4">
+        <mat-label class="block mb-4 text-black">
+          <span
+            *ngIf="personalInfo.get('lastName')?.hasError('required')"
+            class="asterisk"
+            >*</span
+          >
+          Last Name:
+        </mat-label>
+        <mat-form-field appearance="outline" class="w-full">
+          <input matInput formControlName="lastName" [readonly]="!editMode" />
+          <mat-error
+            *ngIf="
+              patientForm.get('personalInfo.lastName')?.hasError('required')
+            "
+            class="text-base"
+          >
+            Last Name is required
+          </mat-error>
+        </mat-form-field>
+      </div>
+      <div class="col-span-3 md:col-span-1 md:justify-self-center mb-6 mr-4">
+        <mat-label class="block mb-4 text-black md:text-center"
+          >Gender:</mat-label
+        >
+        <mat-radio-group
+          aria-label="Select an option"
+          formControlName="gender"
+          class="w-full"
+        >
+          <mat-radio-button value="male" [disabled]="!editMode"
+            >Male</mat-radio-button
+          >
+          <mat-radio-button value="female" [disabled]="!editMode"
+            >Female</mat-radio-button
+          >
+          <mat-error
+            *ngIf="patientForm.get('personalInfo.gender')?.hasError('required')"
+            class="text-base font-normal"
+          >
+            Gender is required
+          </mat-error>
+        </mat-radio-group>
+      </div>
+    </div>
+
+    <div class="grid grid-cols-4 p-4">
+      <div class="col-span-4 md:col-span-1 mb-6 mr-4">
+        <mat-label class="block mb-4 text-black">
+          <span
+            *ngIf="personalInfo.get('dob')?.hasError('required')"
+            class="asterisk"
+            >*</span
+          >
+          Date of birth:
+        </mat-label>
+        <mat-form-field appearance="outline" class="w-full">
+          <input
+            matInput
+            [matDatepicker]="picker"
+            formControlName="dob"
+            [readonly]="!editMode"
+          />
+          <mat-hint>DD/MM/YYYY</mat-hint>
+          <mat-datepicker-toggle
+            matIconSuffix
+            [for]="picker"
+          ></mat-datepicker-toggle>
+          <mat-datepicker #picker [disabled]="!editMode"></mat-datepicker>
+          <mat-error
+            *ngIf="patientForm.get('personalInfo.dob')?.hasError('required')"
+            class="text-base"
+          >
+            Date of Birth is required
+          </mat-error>
+        </mat-form-field>
+      </div>
+
+      <ng-container formGroupName="contactInfo">
+        <div class="col-span-4 md:col-span-1 mb-6 mr-4">
+          <mat-label class="block mb-4 text-black">Address:</mat-label>
+          <mat-form-field appearance="outline" class="w-full">
+            <input matInput formControlName="address" [readonly]="!editMode" />
+            <mat-error
+              *ngIf="
+                patientForm
+                  .get('personalInfo.contactInfo.address')
+                  ?.hasError('required')
+              "
+              class="text-base"
+            >
+              Address is required
+            </mat-error>
+          </mat-form-field>
+        </div>
+
+        <div class="col-span-4 md:col-span-1 mb-6 mr-4">
+          <mat-label class="block mb-4 text-black">Phone:</mat-label>
+          <mat-form-field appearance="outline" class="w-full">
+            <input
+              matInput
+              type="tel"
+              formControlName="phone"
+              [readonly]="!editMode"
+            />
+            <mat-error
+              *ngIf="
+                patientForm
+                  .get('personalInfo.contactInfo.phone')
+                  ?.hasError('required')
+              "
+              class="text-base"
+            >
+              Phone Number is required
+            </mat-error>
+          </mat-form-field>
+        </div>
+
+        <div class="col-span-4 md:col-span-1 mb-6 mr-4">
+          <mat-label class="block mb-4 text-black">Email:</mat-label>
+          <mat-form-field appearance="outline" class="w-full">
+            <input matInput formControlName="email" [readonly]="!editMode" />
+            <mat-error
+              *ngIf="
+                patientForm
+                  .get('personalInfo.contactInfo.email')
+                  ?.hasError('required')
+              "
+              class="text-base"
+            >
+              Email is required
+            </mat-error>
+          </mat-form-field>
+        </div>
+      </ng-container>
+    </div>
+  </div>
+</ng-container>

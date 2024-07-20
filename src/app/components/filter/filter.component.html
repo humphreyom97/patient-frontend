@@ -1,0 +1,19 @@
+<mat-form-field aria-haspopup="outline" class="w-full">
+  <mat-label class="text-base font-medium text-black">Filter</mat-label>
+  <input
+    matInput
+    [(ngModel)]="filterValue"
+    (keyup)="onFilterChange()"
+    aria-label="Filter"
+  />
+  <button
+    *ngIf="filterValue"
+    mat-icon-button
+    matSuffix
+    (click)="clearFilter()"
+    aria-label="Clear filter"
+    class="mr-4"
+  >
+    <mat-icon class="text-black">cancel</mat-icon>
+  </button>
+</mat-form-field>

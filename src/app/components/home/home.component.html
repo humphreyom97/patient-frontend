@@ -1,0 +1,31 @@
+<app-header></app-header>
+
+<div class="flex flex-col flex-1 p-4">
+  <div class="min-w-[80%] self-center">
+    <div class="flex justify-end mb-4">
+      <!-- Refresh Data button -->
+      <button
+        mat-button
+        class="button-manage mr-4"
+        (click)="resetPatientsData()"
+        aria-label="Refresh data"
+      >
+        <mat-icon color="primary" class="icon icon-white">refresh</mat-icon>
+        Reset Data
+      </button>
+
+      <!-- Add Patient button -->
+      <button
+        mat-button
+        class="button-success"
+        (click)="openAddEditPatientDialog()"
+        aria-label="Add new patient"
+      >
+        <mat-icon color="primary" class="icon icon-white">add</mat-icon>
+        Add New Patient
+      </button>
+    </div>
+
+    <app-patient-table></app-patient-table>
+  </div>
+</div>

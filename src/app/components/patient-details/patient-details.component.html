@@ -1,0 +1,51 @@
+<div class="flex flex-col flex-1">
+  <app-patient-details-toolbar
+    [editMode]="editMode"
+    (toggleEditMode)="toggleEditMode()"
+    (savePatient)="savePatient()"
+    (cancelEditMode)="cancelEditMode()"
+    (openPatientDeleteDialog)="openPatientDeleteComponentDialog()"
+    (heightChange)="onToolbarHeightChange($event)"
+  ></app-patient-details-toolbar>
+
+  <div #content>
+    <ng-container *ngIf="patientForm">
+      <form [formGroup]="patientForm">
+        <div class="grid grid-cols-3 w-full mb-4">
+          <div class="col-span-3 md:col-span-1 pl-6 patient-image-container">
+            <img
+              src="/patient-details.jpg"
+              alt="Patient Details"
+              class="patient-image"
+            />
+          </div>
+          <div class="col-span-3 md:col-span-2">
+            <app-personal-info
+              [patientForm]="patientForm"
+              [editMode]="editMode"
+            ></app-personal-info>
+          </div>
+        </div>
+
+        <div class="flex-1">
+          <mat-tab-group>
+            <ng-container *ngFor="let tab of patientDataTabs">
+              <mat-tab [label]="tab.displayValue">
+                <ng-template matTabContent>
+                  <div class="p-6">
+                    <app-dynamic-form
+                      [parentForm]="patientForm.get(tab.dataKey)"
+                      [schema]="schema"
+                      [schemaKey]="tab.dataKey"
+                      [editMode]="editMode"
+                    ></app-dynamic-form>
+                  </div>
+                </ng-template>
+              </mat-tab>
+            </ng-container>
+          </mat-tab-group>
+        </div>
+      </form>
+    </ng-container>
+  </div>
+</div>
