@@ -7,19 +7,19 @@ import { MatButtonModule } from '@angular/material/button';
 import { CommonModule, DatePipe } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { FilterComponent } from '../filter/filter.component';
-import { of } from 'rxjs';
+import { of, throwError } from 'rxjs';
 import { PatientService } from '../../services/patient.service';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 describe('PatientTableComponent', () => {
   let component: PatientTableComponent;
   let fixture: ComponentFixture<PatientTableComponent>;
-  let patientService: jasmine.SpyObj<PatientService>;
+  let patientServiceSpy: jasmine.SpyObj<PatientService>;
   let datePipe: DatePipe;
   let getPatientListSpy: jasmine.Spy;
 
   beforeEach(async () => {
-    const patientServiceSpy = jasmine.createSpyObj('PatientService', [
+    patientServiceSpy = jasmine.createSpyObj('PatientService', [
       'getPatientList',
       'resetPatientsData',
     ]);
@@ -43,7 +43,7 @@ describe('PatientTableComponent', () => {
 
     fixture = TestBed.createComponent(PatientTableComponent);
     component = fixture.componentInstance;
-    patientService = TestBed.inject(
+    patientServiceSpy = TestBed.inject(
       PatientService
     ) as jasmine.SpyObj<PatientService>;
     datePipe = TestBed.inject(DatePipe);
@@ -60,12 +60,29 @@ describe('PatientTableComponent', () => {
     const mockPatientList = [
       { personalInfo: { firstName: 'John', lastName: 'Doe' } },
     ];
-    patientService.getPatientList.and.returnValue(of(mockPatientList));
+    patientServiceSpy.getPatientList.and.returnValue(of(mockPatientList));
 
     component.getPatientList();
 
-    expect(patientService.getPatientList).toHaveBeenCalled();
+    expect(patientServiceSpy.getPatientList).toHaveBeenCalled();
     expect(component.dataSource.data).toEqual(mockPatientList);
+  });
+
+  it('should handle errors when running getPatientList', () => {
+    getPatientListSpy.and.callThrough();
+    const errorResponse = new Error('Deletion failed');
+    patientServiceSpy.getPatientList.and.returnValue(
+      throwError(() => errorResponse)
+    );
+    // Suppress console errors
+    const originalConsoleError = console.error;
+    const consoleErrorSpy = spyOn(console, 'error').and.callFake(() => {});
+
+    component.getPatientList();
+
+    expect(consoleErrorSpy).toHaveBeenCalledWith(errorResponse);
+    // Restore original console error
+    console.error = originalConsoleError;
   });
 
   it('should run nestedFilterCheck', () => {
@@ -149,11 +166,27 @@ describe('PatientTableComponent', () => {
   });
 
   it('should handle resetPatientsData correctly', () => {
-    patientService.resetPatientsData.and.returnValue(of(null));
+    patientServiceSpy.resetPatientsData.and.returnValue(of(null));
 
     component.resetPatientsData();
 
-    expect(patientService.resetPatientsData).toHaveBeenCalled();
+    expect(patientServiceSpy.resetPatientsData).toHaveBeenCalled();
     expect(getPatientListSpy).toHaveBeenCalled();
+  });
+
+  it('should handle errors when running resetPatientsData', () => {
+    const errorResponse = new Error('Resetting Patients failed');
+    patientServiceSpy.resetPatientsData.and.returnValue(
+      throwError(() => errorResponse)
+    );
+    // Suppress console errors
+    const originalConsoleError = console.error;
+    const consoleErrorSpy = spyOn(console, 'error').and.callFake(() => {});
+
+    component.resetPatientsData();
+
+    expect(consoleErrorSpy).toHaveBeenCalledWith(errorResponse);
+    // Restore original console error
+    console.error = originalConsoleError;
   });
 });

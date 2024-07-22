@@ -66,7 +66,7 @@ export class PatientTableComponent implements OnInit {
         this.applyFilter(this.filterValue);
       },
       error: (err) => {
-        console.log(err);
+        console.error(err);
       },
     });
   }
@@ -123,7 +123,7 @@ export class PatientTableComponent implements OnInit {
         this.getPatientList();
       },
       error: (err) => {
-        console.log(err);
+        console.error(err);
       },
     });
   }

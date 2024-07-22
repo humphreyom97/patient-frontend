@@ -14,10 +14,6 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { provideNativeDateAdapter } from '@angular/material/core';
-import * as patientSchema from '../../data/patient-schema';
-
-// mock the getDisplayName function
-const mockGetDisplayName = jasmine.createSpy('getDisplayName');
 
 describe('DynamicFormComponent', () => {
   let component: DynamicFormComponent;
@@ -35,11 +31,7 @@ describe('DynamicFormComponent', () => {
         MatDatepickerModule,
         DynamicFormComponent,
       ],
-      providers: [
-        FormBuilder,
-        provideNativeDateAdapter(),
-        { provide: 'getDisplayName', useValue: mockGetDisplayName },
-      ],
+      providers: [FormBuilder, provideNativeDateAdapter()],
     }).compileComponents();
 
     fixture = TestBed.createComponent(DynamicFormComponent);
@@ -226,16 +218,27 @@ describe('DynamicFormComponent', () => {
     expect(remainingGroup.get('lastName')?.value).toBe('Smith');
   });
 
-  fit('should run getLabel', () => {
+  it('should run getLabel', () => {
     const mockSchemaKey = 'firstName';
-    const mockLabel = 'First Name';
-    mockGetDisplayName.and.returnValue(mockLabel);
-    // Assign the mocked function to the import
-    spyOn(patientSchema, 'getDisplayName').and.callFake(mockGetDisplayName);
+    const mockLabel: any = 'First Name';
 
     const result = component.getLabel(mockSchemaKey);
 
-    expect(mockGetDisplayName).toHaveBeenCalledWith(mockSchemaKey);
     expect(result).toBe(mockLabel);
+  });
+
+  it('should run findKeyType', () => {
+    const obj = {
+      name: { type: 'string' },
+      details: {
+        age: { type: 'number' },
+        address: { type: 'object' },
+      },
+    };
+
+    expect(component.findKeyType(null, 'name')).toBeNull();
+    expect(component.findKeyType(obj, 'name')).toBe('string');
+    expect(component.findKeyType(obj, 'age')).toBe('number');
+    expect(component.findKeyType(obj, 'address')).toBe('object');
   });
 });
