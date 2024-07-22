@@ -40,9 +40,7 @@ export class PatientDetailsToolbarComponent
   }
 
   ngOnDestroy(): void {
-    console.log('hit?1');
     if (this.resizeObserver) {
-      console.log('hit?2');
       this.resizeObserver.disconnect();
     }
   }

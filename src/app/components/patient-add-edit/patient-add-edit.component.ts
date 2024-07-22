@@ -15,6 +15,7 @@ import { provideNativeDateAdapter } from '@angular/material/core';
 import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
 import { CommonModule } from '@angular/common';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-patient-add-edit',
@@ -40,10 +41,15 @@ export class PatientAddEditComponent implements OnInit {
     private patientService: PatientService,
     private dialogRef: MatDialogRef<PatientAddEditComponent>,
     private formBuilder: FormBuilder,
-    @Inject(MAT_DIALOG_DATA) public data: any
+    @Inject(MAT_DIALOG_DATA) public data: any,
+    private snackBar: MatSnackBar
   ) {}
 
   ngOnInit(): void {
+    this.setupPatientForm();
+  }
+
+  setupPatientForm() {
     this.patientForm = this.formBuilder.group({
       personalInfo: this.formBuilder.group({
         firstName: ['', Validators.required],
@@ -53,44 +59,48 @@ export class PatientAddEditComponent implements OnInit {
         contactInfo: this.formBuilder.group({
           address: [''],
           phone: [''],
-          email: [''],
         }),
       }),
     });
-
+    // populate form if updating patient
     if (this.data) {
       this.patientForm.patchValue(this.data);
     }
   }
 
   onSubmit() {
-    if (this.patientForm.valid) {
-      if (this.data) {
-        this.patientService
-          .updatePatient(this.data._id, this.patientForm.value)
-          .subscribe({
-            next: () => {
-              alert('Patient details updated!');
-              this.dialogRef.close(true);
-            },
-            error: (err: any) => {
-              console.error(err);
-              alert('Error while updating the Patient!');
-            },
-          });
-      } else {
-        this.patientService.addPatient(this.patientForm.value).subscribe({
-          next: (val: any) => {
-            alert('Patient added successfully!');
-            this.patientForm.reset();
+    if (this.data) {
+      this.patientService
+        .updatePatient(this.data._id, this.patientForm.value)
+        .subscribe({
+          next: () => {
             this.dialogRef.close(true);
+            this.snackBar.open('Patient Updated successfully!', 'Close', {
+              horizontalPosition: 'end',
+              verticalPosition: 'top',
+              duration: 5000,
+              panelClass: ['custom-snackbar', 'snackbar-success'],
+            });
           },
           error: (err: any) => {
             console.error(err);
-            alert('Error while adding the Patient!');
           },
         });
-      }
+    } else {
+      this.patientService.addPatient(this.patientForm.value).subscribe({
+        next: () => {
+          this.dialogRef.close(true);
+          this.snackBar.open('Patient Added successfully!', 'Close', {
+            horizontalPosition: 'end',
+            verticalPosition: 'top',
+            duration: 5000,
+            panelClass: ['custom-snackbar', 'snackbar-success'],
+          });
+        },
+        error: (err: any) => {
+          console.error(err);
+        },
+      });
     }
   }
 }

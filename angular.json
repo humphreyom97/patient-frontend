@@ -98,7 +98,7 @@
             ],
             "scripts": [],
             "karmaConfig": "karma.conf.js",
-            "codeCoverage": false
+            "codeCoverage": true
           }
         }
       }

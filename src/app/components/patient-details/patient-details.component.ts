@@ -1,14 +1,10 @@
 import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
-import { ActivatedRoute, Router, RouterModule } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { PatientService } from '../../services/patient.service';
 import { CommonModule } from '@angular/common';
 import { MatTabsModule } from '@angular/material/tabs';
-import { MatIconModule } from '@angular/material/icon';
-import { MatButtonModule } from '@angular/material/button';
 import { MatDialog } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { MatCardModule } from '@angular/material/card';
-import { MatListModule } from '@angular/material/list';
 import {
   FormBuilder,
   FormGroup,
@@ -16,16 +12,10 @@ import {
   Validators,
 } from '@angular/forms';
 import { SchemaService } from '../../services/schema.service';
-import { MatFormFieldModule } from '@angular/material/form-field';
-import { MatInputModule } from '@angular/material/input';
 import { DynamicFormComponent } from '../dynamic-form/dynamic-form.component';
 import { patientDataTabs } from '../../data/patient-schema';
-import { MatRadioModule } from '@angular/material/radio';
-import { MatDatepickerModule } from '@angular/material/datepicker';
-import { provideNativeDateAdapter } from '@angular/material/core';
 import { PersonalInfoComponent } from '../personal-info/personal-info.component';
 import { PatientDeleteComponent } from '../patient-delete/patient-delete.component';
-import { HeaderComponent } from '../header/header.component';
 import { PatientDetailsToolbarComponent } from '../patient-details-toolbar/patient-details-toolbar.component';
 
 @Component({
@@ -34,23 +24,11 @@ import { PatientDetailsToolbarComponent } from '../patient-details-toolbar/patie
   imports: [
     CommonModule,
     MatTabsModule,
-    MatIconModule,
-    MatButtonModule,
-    MatCardModule,
-    MatListModule,
     ReactiveFormsModule,
-    MatFormFieldModule,
-    MatInputModule,
     DynamicFormComponent,
-    MatRadioModule,
-    MatDatepickerModule,
     PersonalInfoComponent,
-    PatientDeleteComponent,
-    HeaderComponent,
-    RouterModule,
     PatientDetailsToolbarComponent,
   ],
-  providers: [provideNativeDateAdapter()],
   templateUrl: './patient-details.component.html',
   styleUrl: './patient-details.component.scss',
 })
@@ -84,20 +62,18 @@ export class PatientDetailsComponent implements OnInit {
       this.patientService.getPatientById(this.patientId).subscribe({
         next: (res: any[]) => {
           this.patientData = res;
-          this.fetchPatientsSchema();
-          console.log('res', res);
+          this.getPatientsSchema();
         },
         error: (err) => {
-          console.error('Error fetching patient details:', err);
+          console.error('Error getting patient details:', err);
         },
       });
     }
   }
 
-  fetchPatientsSchema() {
+  getPatientsSchema() {
     this.schemaService.getPatientSchema().subscribe({
       next: (data: any) => {
-        console.log('test schema', data);
         this.schema = data;
         this.createPatientsForm();
       },
@@ -111,7 +87,6 @@ export class PatientDetailsComponent implements OnInit {
     const formGroupConfig = this.createFormGroupConfig(this.schema);
     // create form structure with no data
     this.patientForm = this.formBuilder.group(formGroupConfig);
-    console.log('testing', this.patientForm);
     // add data to form structure
     this.populateFormWithData();
   }
@@ -164,28 +139,20 @@ export class PatientDetailsComponent implements OnInit {
     this.patientService
       .updatePatient(this.patientData._id, this.patientForm.value)
       .subscribe({
-        next: (val: any) => {
+        next: () => {
           this.toggleEditMode();
           this.getPatientDetails();
           this.snackBar.open('Patient updated successfully!', 'Close', {
             horizontalPosition: 'end',
             verticalPosition: 'top',
-            duration: 300000, // Duration in milliseconds
+            duration: 5000,
             panelClass: ['custom-snackbar', 'snackbar-success'],
           });
         },
         error: (err: any) => {
           console.error(err);
-          alert('Error while updating the Patient!');
         },
       });
-  }
-
-  onToolbarHeightChange(height: number): void {
-    if (this.content) {
-      console.log('testing toolbar', height);
-      this.content.nativeElement.style.marginTop = `${height + 24}px`;
-    }
   }
 
   openPatientDeleteComponentDialog() {
@@ -205,15 +172,21 @@ export class PatientDetailsComponent implements OnInit {
         this.snackBar.open('Patient deleted successfully!', 'Close', {
           horizontalPosition: 'end',
           verticalPosition: 'top',
-          duration: 5000, // Duration in milliseconds
+          duration: 5000,
           panelClass: ['custom-snackbar', 'snackbar-success'],
         });
         // Navigate back to the /patients route
         this.router.navigate(['/patients']);
       },
       error: (err) => {
-        console.log(err);
+        console.error(err);
       },
     });
+  }
+
+  onToolbarHeightChange(height: number): void {
+    if (this.content) {
+      this.content.nativeElement.style.marginTop = `${height + 24}px`;
+    }
   }
 }

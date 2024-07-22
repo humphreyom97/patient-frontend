@@ -3,107 +3,113 @@
     {{ data ? "Edit" : "Add" }} Patient Form
   </h1>
 </div>
-<form [formGroup]="patientForm">
-  <div mat-dialog-content class="content">
-    <div formGroupName="personalInfo">
-      <div class="flex flex-row p-4">
-        <div class="flex-1 min-w-[50%] mr-3">
-          <mat-label class="block mb-4 text-black">First name:</mat-label>
-          <mat-form-field appearance="outline" class="w-full">
-            <input matInput formControlName="firstName" />
-            <mat-error
-              *ngIf="
-                patientForm.get('personalInfo.firstName')?.hasError('required')
-              "
-              class="text-base"
-            >
-              First Name is required
-            </mat-error>
-          </mat-form-field>
+<ng-container *ngIf="patientForm">
+  <form [formGroup]="patientForm">
+    <div mat-dialog-content class="content">
+      <div formGroupName="personalInfo">
+        <div class="flex flex-row p-4">
+          <div class="flex-1 min-w-1/2 mr-3">
+            <mat-label class="block mb-4 text-black">First name:</mat-label>
+            <mat-form-field appearance="outline" class="w-full">
+              <input matInput formControlName="firstName" />
+              <mat-error
+                *ngIf="
+                  patientForm
+                    .get('personalInfo.firstName')
+                    ?.hasError('required')
+                "
+                class="text-base"
+              >
+                First Name is required
+              </mat-error>
+            </mat-form-field>
+          </div>
+          <div class="flex-1 min-w-1/2 mr-3">
+            <mat-label class="block mb-4 text-black">Last Name:</mat-label>
+            <mat-form-field appearance="outline" class="w-full">
+              <input matInput formControlName="lastName" />
+              <mat-error
+                *ngIf="
+                  patientForm.get('personalInfo.lastName')?.hasError('required')
+                "
+                class="text-base"
+              >
+                Last Name is required
+              </mat-error>
+            </mat-form-field>
+          </div>
         </div>
-        <div class="flex-1 min-w-[50%] mr-3">
-          <mat-label class="block mb-4 text-black">Last Name:</mat-label>
-          <mat-form-field appearance="outline" class="w-full">
-            <input matInput formControlName="lastName" />
-            <mat-error
-              *ngIf="
-                patientForm.get('personalInfo.lastName')?.hasError('required')
-              "
-              class="text-base"
+        <div class="flex flex-row p-4">
+          <div class="flex-1 min-w-1/2 mr-3">
+            <mat-label class="block mb-4 text-black">Gender:</mat-label>
+            <mat-radio-group
+              aria-label="Select an option"
+              formControlName="gender"
+              class="w-full"
             >
-              Last Name is required
-            </mat-error>
-          </mat-form-field>
-        </div>
-      </div>
-      <div class="flex flex-row p-4">
-        <div class="flex-1 min-w-[50%] mr-3">
-          <mat-label class="block mb-4 text-black">Gender:</mat-label>
-          <mat-radio-group
-            aria-label="Select an option"
-            formControlName="gender"
-            class="w-full"
-          >
-            <mat-radio-button value="male">Male</mat-radio-button>
-            <mat-radio-button value="female">Female</mat-radio-button>
-            <mat-error
-              *ngIf="
-                patientForm.get('personalInfo.gender')?.hasError('required')
-              "
-              class="text-base font-normal"
-            >
-              Gender is required
-            </mat-error>
-          </mat-radio-group>
-        </div>
+              <mat-radio-button value="male">Male</mat-radio-button>
+              <mat-radio-button value="female">Female</mat-radio-button>
+              <mat-error
+                *ngIf="
+                  patientForm.get('personalInfo.gender')?.hasError('required')
+                "
+                class="text-base font-normal"
+              >
+                Gender is required
+              </mat-error>
+            </mat-radio-group>
+          </div>
 
-        <div class="flex-1 min-w-[50%] mr-3">
-          <mat-label class="block mb-4 text-black">Date of birth:</mat-label>
-          <mat-form-field appearance="outline" class="w-full">
-            <input matInput [matDatepicker]="picker" formControlName="dob" />
-            <mat-hint>DD/MM/YYYY</mat-hint>
-            <mat-datepicker-toggle
-              matIconSuffix
-              [for]="picker"
-            ></mat-datepicker-toggle>
-            <mat-datepicker #picker></mat-datepicker>
-            <mat-error
-              *ngIf="patientForm.get('personalInfo.dob')?.hasError('required')"
-              class="text-base"
-            >
-              Date of Birth is required
-            </mat-error>
-          </mat-form-field>
+          <div class="flex-1 min-w-1/2 mr-3">
+            <mat-label class="block mb-4 text-black">Date of birth:</mat-label>
+            <mat-form-field appearance="outline" class="w-full">
+              <input matInput [matDatepicker]="picker" formControlName="dob" />
+              <mat-hint>DD/MM/YYYY</mat-hint>
+              <mat-datepicker-toggle
+                matIconSuffix
+                [for]="picker"
+              ></mat-datepicker-toggle>
+              <mat-datepicker #picker></mat-datepicker>
+              <mat-error
+                *ngIf="
+                  patientForm.get('personalInfo.dob')?.hasError('required')
+                "
+                class="text-base"
+              >
+                Date of Birth is required
+              </mat-error>
+            </mat-form-field>
+          </div>
         </div>
-      </div>
-      <div class="flex flex-row p-4" formGroupName="contactInfo">
-        <div class="flex-1 min-w-[50%] mr-3">
-          <mat-label class="block mb-4 text-black">Address:</mat-label>
-          <mat-form-field appearance="outline" class="w-full">
-            <input matInput formControlName="address" />
-          </mat-form-field>
-        </div>
+        <div class="flex flex-row p-4" formGroupName="contactInfo">
+          <div class="flex-1 min-w-1/2 mr-3">
+            <mat-label class="block mb-4 text-black">Address:</mat-label>
+            <mat-form-field appearance="outline" class="w-full">
+              <input matInput formControlName="address" />
+            </mat-form-field>
+          </div>
 
-        <div class="flex-1 min-w-[50%] mr-3">
-          <mat-label class="block mb-4 text-black">Phone:</mat-label>
-          <mat-form-field appearance="outline" class="w-full">
-            <input matInput formControlName="phone" />
-          </mat-form-field>
+          <div class="flex-1 min-w-1/2 mr-3">
+            <mat-label class="block mb-4 text-black">Phone:</mat-label>
+            <mat-form-field appearance="outline" class="w-full">
+              <input matInput formControlName="phone" />
+            </mat-form-field>
+          </div>
         </div>
       </div>
     </div>
-  </div>
-  <div mat-dialog-actions class="action-btns">
-    <button mat-button class="h-16 w-24" type="button" mat-dialog-close>
-      Cancel
-    </button>
-    <button
-      mat-button
-      class="mr-2 h-16 w-24 text-base"
-      [disabled]="!patientForm.valid"
-      (click)="onSubmit()"
-    >
-      {{ data ? "Update" : "Add" }}
-    </button>
-  </div>
-</form>
+    <div mat-dialog-actions class="action-btns">
+      <button mat-button class="h-16 w-24" type="button" mat-dialog-close>
+        Cancel
+      </button>
+      <button
+        mat-button
+        class="mr-2 h-16 w-24 text-base"
+        [disabled]="!patientForm.valid"
+        (click)="onSubmit()"
+      >
+        {{ data ? "Update" : "Add" }}
+      </button>
+    </div>
+  </form>
+</ng-container>
