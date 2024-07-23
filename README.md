@@ -1,15 +1,39 @@
-# Project
+# Project Overview
+This is a simple CRUD patient management application built with the MEAN stack. It allows users to manage patient records efficiently. The frontend is built using Angular, Angular Material, and Tailwind CSS, while the backend is developed with Node.js, Express, and MongoDB.
 
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 18.0.7.
+# Technologies
+**Frontend:** Angular, Angular Material, Tailwind CSS<br/><br/>
+**Backend:** Node.js, Express<br/><br/>
+**Database:** MongoDB<br/>
 
-## Development server
+# Features
+* Add, update, delete, and view patient records.<br/>
+* Responsive design using Tailwind CSS.<br/>
+* Modern UI with Angular Material components.<br/>
 
-Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The application will automatically reload if you change any of the source files.
+# Prerequisites
+1. Node.js (v20.15.0)<br/>
+2. npm (v10.8.1)<br/>
+3. MongoDB (local or a remote database)<br/>
 
-## Code scaffolding
-
-Run `ng generate component component-name` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module`.
-
+# Installation
+1. Clone the repository & navigate to directory
+   ```
+   cd patient-management-app
+   ```
+2. Install frontend dependencies:
+   ```
+   npm install
+   ```
+3. Setup Backend - Link: https://github.com/humphreyom97/patient-backend
+   
+4. Start the development server:
+   ```
+   ng serve
+   ```
+5. Open your browser and go to http://localhost:4200.
+   
+   
 ## Build
 
 Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory.
@@ -17,11 +41,3 @@ Run `ng build` to build the project. The build artifacts will be stored in the `
 ## Running unit tests
 
 Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
-
-## Running end-to-end tests
-
-Run `ng e2e` to execute the end-to-end tests via a platform of your choice. To use this command, you need to first add a package that implements end-to-end testing capabilities.
-
-## Further help
-
-To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.
