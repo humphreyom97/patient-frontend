@@ -26,7 +26,10 @@ export class HomeComponent {
   constructor(private dialog: MatDialog) {}
 
   openAddEditPatientDialog() {
-    const dialogRef = this.dialog.open(PatientAddEditComponent);
+    const dialogRef = this.dialog.open(PatientAddEditComponent, {
+      minWidth: '400px',
+      maxHeight: '100vh',
+    });
     dialogRef.afterClosed().subscribe({
       next: (val) => {
         if (val) {
