@@ -27,8 +27,8 @@
           </div>
         </div>
 
-        <div class="flex-1">
-          <mat-tab-group>
+        <div>
+          <mat-tab-group class="min-h-80">
             <ng-container *ngFor="let tab of patientDataTabs">
               <mat-tab [label]="tab.displayValue">
                 <ng-template matTabContent>
